@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block content %}
+<center><h1>Sign up and post somthing in the blog!</h1></center> <br> <br>
+<form method="POST">
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+        {{ form.hidden_tag() }}
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control") }}
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control") }}
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+            {{ form.color.label(class="form-label") }}
+            {{ form.color(class="form-control") }}
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control") }}
+            {{ form.confirm_password.label(class="form-label") }}
+            {{ form.confirm_password(class="form-control") }}
+            <br>
+            {{ form.submit(class="btn btn-outline-secondary") }}
+    </div>
+</form>
+<table class="table table-hover table-sm table-striped">
+    {% for user in our_users %}
+    <tr class="table-dark">
+    <td>{{ user.id }} - {{ user.name }}- {{user.username}} - {{ user.email }} - {{ user.favorite_color }} - 
+        <button type="button" class="btn btn-danger">
+        <a href="{{ url_for('delete', id=user.id) }}">Delete</a> </td>
+        </button>
+    </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
