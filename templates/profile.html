@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% block content %}
+<center><h1>Welcom {{ current_user.name }}</h1></center> <br> <br>
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+    <div class="card-body">
+        <h5 class="card-title">User's information</h5>
+        <p class="card-text">
+    <div class="container">
+    <div class="row">
+    <div class="col-8">
+        User id: {{current_user.id}}
+        <br>
+        strUsername: {{current_user.username}} 
+        <br>
+        Email Adress: {{current_user.email}} 
+        <br>
+        Favorite Color: {{current_user.favorite_color}}
+        <br>
+        Date joined: {{current_user.date_registered}} 
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

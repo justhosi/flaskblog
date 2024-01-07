@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% block content %}
+<center><h1>Update User</h1></center>
+<br>
+{% if name_to_update.id == current_user.id %}
+<form method="post" enctype="multipart/form-data">
+    <br>
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+        {{ form.hidden_tag() }}
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control", value=name_to_update.name) }}
+        {{ form.username.label(class="form-label") }}
+        {{ form.username(class="form-control", value=name_to_update.username) }}
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control", value=name_to_update.email) }}
+        {{ form.color.label(class="form-label") }}
+        {{ form.color(class="form-control", value=name_to_update.color) }}
+        <br>
+        {{ form.submit(class="btn btn-dark") }}
+    </div>
+</form>
+{% else %}
+<center><h2>You don't have access to this page!</h2></center>
+{% endif %}
+<br><br><br>
+
+{% endblock %}
