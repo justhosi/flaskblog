@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+<center>
+    <h1> Admin area </h1></center> <br><br><br>
+{% for user in users %}
+<div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+    <div class="card-header">User id: {{user.id}}</div>
+    <div class="card-body">
+      <h5 class="card-title">{{ user.username }}</h5>
+      <p class="card-text">Email: {{user.email}} <br>Favorite color: {{user.favorite_color}} <br> <br>
+        <a href="{{ url_for('update', id=user.id) }}" class="btn btn-outline-info">Edit user</a> &nbsp;
+        <a href="{{ url_for('delete', id=user.id) }}" class="btn btn-outline-danger">Delete user</a></p>
+    </div>
+  </div> <br> <br> <br>
+{% endfor %}
+    
+
+
+{% endblock %}

@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, SelectField, TextAreaField
 from wtforms.validators import DataRequired, length, EqualTo, Email
+from wtforms.widgets import TextArea
 
 class RegisterForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
@@ -22,3 +23,9 @@ class LoginForm(FlaskForm):
     email = StringField('Please enter your email address', validators=[Email()])
     password = PasswordField('Enter your pasword', validators=[DataRequired()])
     submit = SubmitField('Sign in')
+
+class PostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = StringField('What is on your mind?',widget=TextArea(), validators=[DataRequired()])
+    slug = StringField('Slug', validators=[DataRequired()])
+    submit = SubmitField('Post')

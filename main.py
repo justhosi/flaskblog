@@ -1,10 +1,11 @@
 from flask import Flask, render_template, url_for, redirect, flash, request
 from flask_sqlalchemy import SQLAlchemy
-from forms import RegisterForm, LoginForm, UpdateForm
+from forms import RegisterForm, LoginForm, UpdateForm, PostForm
 import creds
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, logout_user, login_required, current_user
+from flask_migrate import Migrate
 
 #Create the app instance
 app = Flask(__name__)
@@ -12,14 +13,15 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = creds.secret_key 
 app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql+pymysql://root:password123@localhost/flaskblog'
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 @login_manager.user_loader
-def user_loader(user_id):
-    return Users.query.get(user_id)
+def load_user(user_id):
+    return db.session.get(Users, user_id)
 
 
 #Define the home page
@@ -67,7 +69,7 @@ def update(id):
 
         try:
             db.session.commit()
-            flash('Profile has been updated successfully', 'seccess')
+            flash('Profile has been updated successfully', 'success')
             return render_template('profile.html')
         except:
             flash('Something went wrong...try again!', 'danger')
@@ -111,6 +113,13 @@ def login():
                 flash('Please check email and password again!', 'danger')
     return render_template('login.html', form = form)
 
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out', 'info')
+    return render_template('index.html')
+
 # Create a profile page for users
 @app.route('/profile')
 # Prevent users access without being logged in
@@ -118,6 +127,79 @@ def login():
 def profile():
     return render_template('profile.html')
 
+#To add post to blog
+@app.route('/add-post', methods=['GET', 'POST'])
+@login_required
+def add_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        poster = current_user.id
+        post = Posts(title = form.title.data, content= form.content.data, poster_id=poster, slug = form.slug.data)
+        form.title.data = ''
+        form.content.data = ''
+        form.slug.data = ''  
+        db.session.add(post)
+        db.session.commit()
+        flash('The post has been sent', 'success')
+    
+    return render_template('add_post.html', form=form)
+
+@app.route('/posts')
+def posts():
+    id = current_user.id
+    posts = Posts.query.order_by(Posts.date_posted)
+    return render_template('posts.html', posts=posts, id = id)
+
+@app.route('/posts/<int:id>')
+def post(id):
+    user_id = current_user.id
+    post = Posts.query.get_or_404(id)
+    return render_template('post.html', post=post, user_id = user_id)
+
+@app.route('/posts/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_post(id):
+    post = Posts.query.get_or_404(id)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.slug = form.slug.data
+        post.content = form.content.data
+        db.session.add(post)
+        db.session.commit()
+        flash('The post has been updated', 'success')
+        return redirect(url_for('post', id = post.id))
+
+    form.title.data = post.title
+    form.slug.data = post.slug
+    form.content.data =post.content
+    return render_template('edit_post.html', form = form)
+
+@app.route('/posts/delete/<int:id>')
+@login_required
+def post_to_delete(id):
+    post_to_delete = Posts.query.get_or_404(id)
+
+    try:
+        db.session.delete(post_to_delete)
+        db.session.commit()
+        flash('The post is deleted', 'danger')
+        return redirect(url_for('posts'))
+
+    except:
+        flash('There was a problem! please try again.')
+        return redirect(url_for('posts'))
+    
+@app.route('/admin')
+@login_required
+def admin():
+    id = current_user.id
+    users = Users.query.order_by(Users.id).all()
+    if id == 1:
+        return render_template('admin.html', users = users)
+    else:
+        flash('You dont have access to this page')
+        return redirect(url_for('profile'))
 
 
 
@@ -132,6 +214,7 @@ class Users(db.Model, UserMixin):
     favorite_color = db.Column(db.String(120))
     date_registered = db.Column(db.DateTime, default=datetime.utcnow)
     password_hash = db.Column(db.String(255))
+    posts = db.relationship('Posts', backref= 'poster')
 
     # Make sure the password is not accessible in database
     @property
@@ -150,6 +233,16 @@ class Users(db.Model, UserMixin):
     # Create A String
     def __repr__(self):
         return '<Name %r>' % self.name
+
+# Create a post database model    
+class Posts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100))
+    content = db.Column(db.Text)
+    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    slug = db.Column(db.String(255))
+    # To detemine who is the author of the post
+    poster_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
 with app.app_context():

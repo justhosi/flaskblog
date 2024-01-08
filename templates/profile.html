@@ -9,16 +9,20 @@
     <div class="col-8">
         User id: {{current_user.id}}
         <br>
-        strUsername: {{current_user.username}} 
+        Username: {{current_user.username}} 
         <br>
         Email Adress: {{current_user.email}} 
         <br>
         Favorite Color: {{current_user.favorite_color}}
         <br>
-        Date joined: {{current_user.date_registered}} 
+        Date joined: {{current_user.date_registered}} <br> <br>
+
+        <a href="{{ url_for('update', id=current_user.id) }}" class="btn btn-outline-info">Edit user</a> &nbsp;
+        <a href="{{ url_for('delete', id=current_user.id) }}" class="btn btn-outline-danger">Delete user</a>
     </div>
     </div>
     </div>
+    
 </div>
 
 

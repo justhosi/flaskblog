@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<center><h1>Edit post</h1></center>
+<br>
+<form method="post">
+    <br>
+    <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+        {{ form.hidden_tag() }}
+        {{ form.title.label(class="form-label") }}
+        {{ form.title(class="form-control") }}
+        {{ form.slug.label(class="form-label") }}
+        {{ form.slug(class="form-control") }}
+        {{ form.content.label(class="form-label") }}
+        {{ form.content(class="form-control", rows= 10) }}
+        <br>
+        {{ form.submit(class="btn btn-dark") }}
+    </div>
+</form>
+
+<br><br><br>
+{% endblock %}
