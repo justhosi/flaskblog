@@ -29,3 +29,7 @@ class PostForm(FlaskForm):
     content = StringField('What is on your mind?',widget=TextArea(), validators=[DataRequired()])
     slug = StringField('Slug', validators=[DataRequired()])
     submit = SubmitField('Post')
+
+class SearchForm(FlaskForm):
+    searched = StringField('Searched', validators=[DataRequired()])
+    submit = SubmitField('Search')

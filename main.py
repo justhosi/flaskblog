@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, flash, request
 from flask_sqlalchemy import SQLAlchemy
-from forms import RegisterForm, LoginForm, UpdateForm, PostForm
+from forms import RegisterForm, LoginForm, UpdateForm, PostForm, SearchForm
 import creds
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -189,7 +189,8 @@ def post_to_delete(id):
     except:
         flash('There was a problem! please try again.')
         return redirect(url_for('posts'))
-    
+
+# Create admin area and make user with id num 1 as admin 
 @app.route('/admin')
 @login_required
 def admin():
@@ -201,7 +202,23 @@ def admin():
         flash('You dont have access to this page')
         return redirect(url_for('profile'))
 
+# Create a search function 
+@app.route('/search', methods=['POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        # Get data from form
+        post.searched = form.searched.data
+        # Query the database
+        posts = Posts.query.filter(Posts.content.like('%' + post.searched + '%'))
+        posts = Posts.query.order_by(Posts.title).all()
+        return render_template('search.html', form=form, posts=posts)
 
+# Inject form into navbar template
+@app.context_processor
+def base():
+    form = SearchForm()
+    return dict(form=form)
 
 
 
