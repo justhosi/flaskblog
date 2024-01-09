@@ -14,7 +14,7 @@ app.config['SECRET_KEY'] = creds.secret_key
 # Local database
 # app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql+pymysql://root:password123@localhost/flaskblog'
 # Heroku database
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://nzrzsokufvtnzt:cddbc5245f13fc075e699c5658473b7ab51e4cf6d1b4354ff3386d6b15458c0c@ec2-54-234-13-16.compute-1.amazonaws.com:5432/dq631ist2020m'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://ayocknqsmlqqlg:dfeaf62427a370140e4e9811cbdcbbf24332f94f93f86cbe7271efa8449da294@ec2-3-232-218-211.compute-1.amazonaws.com:5432/d7do2qdhrcvmj0'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
