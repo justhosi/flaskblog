@@ -5,7 +5,6 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, logout_user, login_required, current_user
 from flask_migrate import Migrate
-import psycopg2
 
 #Create the app instance
 app = Flask(__name__)
