@@ -1,7 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, flash, request
 from flask_sqlalchemy import SQLAlchemy
 from forms import RegisterForm, LoginForm, UpdateForm, PostForm, SearchForm
-import creds
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, logout_user, login_required, current_user
