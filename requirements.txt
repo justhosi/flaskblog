@@ -21,7 +21,7 @@ mysql-connector==2.2.9
 mysql-connector-python==8.2.0
 packaging==23.2
 protobuf==4.21.12
-psycopg2-binary==2.9.1
+psycopg2==2.9.1
 pycparser==2.21
 PyMySQL==1.1.0
 SQLAlchemy==2.0.25
