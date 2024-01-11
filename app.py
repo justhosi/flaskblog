@@ -263,9 +263,3 @@ class Posts(db.Model):
     slug = db.Column(db.String(255))
     # To detemine who is the author of the post
     poster_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-
-with app.app_context():
-    db.create_all()
-
-
