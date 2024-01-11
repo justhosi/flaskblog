@@ -10,7 +10,7 @@ from flask_migrate import Migrate
 #Create the app instance
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = creds.secret_key 
+app.config['SECRET_KEY'] = '5791628bb0b1676dfde28'
 # Local database
 # app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql+pymysql://root:password123@localhost/flaskblog'
 # Heroku database
