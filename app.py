@@ -12,10 +12,10 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '5791628bb0b1676dfde28'
 # Local database
-# app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql+pymysql://root:password123@localhost/flaskblog'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql+pymysql://root:password123@localhost/flaskblog'
 
 # Set the DATABASE_URL from the environment variable or use a default value
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL')
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL')
 # Heroku database
 # app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://yvbnthafjazbnv:f604336daf626b3a39a94b713693955e6c5625471dfbe75ae52dba994496581e@ec2-44-213-151-75.compute-1.amazonaws.com:5432/d8573m5j7283ka'
 # Silence the SQLAlchemy deprecation warning
@@ -89,6 +89,7 @@ def update(id):
 
 # Delete user from the databaase
 @app.route('/delete/<int:id>')
+@login_required
 def delete(id):
     user_to_del = Users.query.get_or_404(id)
     form = RegisterForm
