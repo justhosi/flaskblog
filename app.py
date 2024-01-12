@@ -91,19 +91,23 @@ def update(id):
 @app.route('/delete/<int:id>')
 @login_required
 def delete(id):
-    user_to_del = Users.query.get_or_404(id)
-    form = RegisterForm
-    name = None
-    try:
-        db.session.delete(user_to_del)
-        db.session.commit()
-        flash('The user has been deleted', 'danger')
-        our_users = Users.query.order_by(Users.date_registered)
-        return redirect(url_for('register', form = form, name = name, our_users = our_users))
-    
-    except:
-        flash('Something went wrong. Try again.', 'danger')
-        return redirect(url_for('register', form = form, name = name, our_users = our_users))
+    if current_user.id ==3 or id == current_user.id:
+        user_to_del = Users.query.get_or_404(id)
+        form = RegisterForm
+        name = None
+        try:
+            db.session.delete(user_to_del)
+            db.session.commit()
+            flash('The user has been deleted', 'danger')
+            our_users = Users.query.order_by(Users.date_registered)
+            return redirect(url_for('register', form = form, name = name, our_users = our_users))
+        
+        except:
+            flash('Something went wrong. Try again.', 'danger')
+            return redirect(url_for('register', form = form, name = name, our_users = our_users))
+    else:
+        flash("You don't have access to this page!", 'danger')
+        return redirect(url_for('profile'))
 
 # Create a login route  
 @app.route('/login', methods=['GET', 'POST'])
@@ -117,7 +121,7 @@ def login():
             if check_password_hash(user.password_hash, form.password.data):
                 login_user(user)
                 flash('Login was successful', 'success')
-                return render_template('profile.html', id=current_user.id)
+                return redirect(url_for('profile'))
             else:
                     flash('Please check email and password again!', 'danger')
         else:
@@ -136,7 +140,9 @@ def logout():
 # Prevent users access without being logged in
 @login_required
 def profile():
-    return render_template('profile.html')
+    id = current_user.id
+    user = Users.query.get_or_404(id)
+    return render_template('profile.html', user = user)
 
 #To add post to blog
 @app.route('/add-post', methods=['GET', 'POST'])

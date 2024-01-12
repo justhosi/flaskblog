@@ -1,5 +1,13 @@
-{% extends "base.html" %} {% block content %}
-<center>Home page
+{% extends "base.html" %}
+{% block content %}
+<center><h1 class="display">Welcom to the resume flask blog!</h1>
+<br> <br>
+<img src="{{ url_for('static', filename='images/Flask_logo.svg.png') }}", height="300"> <br> <br></center>
+<br> <br>
+<p class="lead">By building this blog, I tried to use it as a showcase of my knowlege about
+    python, flask and database. Please examine the website and feel free to give
+    me your feedback.
+</p>
 
-This is the firs page!</center>
+
 {% endblock %}

@@ -16,7 +16,7 @@ class UpdateForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
     username = StringField('Choose a username', validators=[DataRequired()])
     email = StringField('Please enter your email address', validators=[Email()])
-    color = SelectField(u'What is your favorite color?', choices=[('F6F7C4', 'Yellow'), ('FF6969', 'Red'), ('AEE2FF', 'Blue'), ('D0F5BE', 'Green')])
+    color = SelectField(u'What is your favorite color?', choices=[('warning', 'Yellow'), ('danger', 'Red'), ('primary', 'Blue'), ('success', 'Green')])
     submit = SubmitField('Update')
 
 class LoginForm(FlaskForm):

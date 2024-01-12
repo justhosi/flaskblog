@@ -1,5 +1,7 @@
 {% extends "base.html" %} {% block content %}
+<div class="bg-{{user.favorite_color}}" style="padding: 5%;">
 <center><h1>Welcom {{ current_user.name }}</h1></center> <br> <br>
+
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
     <div class="card-body">
         <h5 class="card-title">User's information</h5>
@@ -7,22 +9,24 @@
     <div class="container">
     <div class="row">
     <div class="col-8">
+        
         User id: {{current_user.id}}
         <br>
         Username: {{current_user.username}} 
         <br>
         Email Adress: {{current_user.email}} 
         <br>
-        Favorite Color: {{current_user.favorite_color}}
-        <br>
         Date joined: {{current_user.date_registered}} <br> <br>
+        
 
         <a href="{{ url_for('update', id=current_user.id) }}" class="btn btn-outline-info">Edit user</a> &nbsp;
         <a href="{{ url_for('delete', id=current_user.id) }}" class="btn btn-outline-danger">Delete user</a>
     </div>
     </div>
     </div>
+</div>
     
+</div>
 </div>
 
 

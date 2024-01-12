@@ -5,9 +5,9 @@
     
     <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
         <h1>{{ post.title }}</h1><br>
-        By: {{ post.poster.name }} <br>
+        <p class="lead">By: {{ post.poster.id }} <br>
         {{ post.date_posted }} <br>
-        {{ post.content | safe }} <br>
+        {{ post.content | safe }} <br></p>
         <br>
         {% if user_id == post.poster_id %}
             
